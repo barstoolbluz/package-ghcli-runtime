@@ -29,10 +29,10 @@ need_arg() {
     fi
 }
 
-# Validate that a name contains only safe characters (alphanumeric, hyphen)
+# Validate that a name contains only safe characters (alphanumeric, hyphen, non-empty)
 validate_name() {
     local label="$1" value="$2"
-    if [[ "$value" =~ [^a-zA-Z0-9-] ]]; then
+    if [[ -z "$value" || "$value" =~ [^a-zA-Z0-9-] ]]; then
         die "Invalid $label: '$value'"
     fi
 }
@@ -79,7 +79,7 @@ ensure_gh_auth() {
     fi
     if ! gh auth status >/dev/null 2>&1; then
         fmt_error "Not authenticated with GitHub"
-        fmt_info "Run 'ghcli-runtime' to set up authentication, or 'gh auth login' directly."
+        fmt_info "Run 'ghcli-runtime' to set up authentication, or 'gh auth login' directly." >&2
         exit 1
     fi
 }
@@ -91,7 +91,9 @@ show_learn() {
     local learn_file
 
     validate_name "command" "$command"
-    [[ -n "$subcommand" ]] && validate_name "subcommand" "$subcommand"
+    if [[ -n "$subcommand" ]]; then
+        validate_name "subcommand" "$subcommand"
+    fi
 
     if [[ -n "$subcommand" ]]; then
         learn_file="${GHX_ROOT}/lib/ghx/learn/${command}-${subcommand}.md"
@@ -118,9 +120,13 @@ dispatch_subcommand() {
     local command="${1:-}" subcommand="${2:-}"
     shift 2 || shift $#
 
-    [[ -z "$command" ]] && die "No command specified"
+    if [[ -z "$command" ]]; then
+        die "No command specified"
+    fi
     validate_name "command" "$command"
-    [[ -n "$subcommand" ]] && validate_name "subcommand" "$subcommand"
+    if [[ -n "$subcommand" ]]; then
+        validate_name "subcommand" "$subcommand"
+    fi
 
     # Separate --learn and --help from the remaining args
     local filtered_args=()
