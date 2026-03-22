@@ -18,6 +18,7 @@ esac
 command="$1"
 shift
 
+validate_name "command" "$command"
 command_file="${GHX_ROOT}/lib/ghx/commands/${command}.sh"
 
 if [[ ! -f "$command_file" ]]; then
