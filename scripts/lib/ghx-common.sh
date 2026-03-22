@@ -20,6 +20,15 @@ need_cmd() {
     have_cmd "$1" || die "$1 is required but not found on PATH"
 }
 
+# --- Argument helpers ---
+
+# Assert that a flag has a value following it
+need_arg() {
+    if [[ $# -lt 2 || -z "${2:-}" ]]; then
+        die "Option '$1' requires a value"
+    fi
+}
+
 # --- Output formatting (gum-aware) ---
 
 fmt_header() {
@@ -94,25 +103,50 @@ show_learn() {
 dispatch_subcommand() {
     local command="$1" subcommand="${2:-}"
     shift 2 || shift $#
-    local args=("$@")
+
+    # Separate --learn and --help from the remaining args
     local filtered_args=()
     local learn_mode=0
+    local help_mode=0
 
-    # Extract --learn from args
-    for arg in "${args[@]}"; do
-        if [[ "$arg" == "--learn" ]]; then
-            learn_mode=1
-        else
-            filtered_args+=("$arg")
-        fi
+    for arg in "$@"; do
+        case "$arg" in
+            --learn) learn_mode=1 ;;
+            --help|-h) help_mode=1 ;;
+            *) filtered_args+=("$arg") ;;
+        esac
     done
 
+    # --learn takes priority over everything
     if [[ "$learn_mode" -eq 1 ]]; then
         show_learn "$command" "$subcommand"
         return 0
     fi
 
-    if [[ -z "$subcommand" || "$subcommand" == "--help" || "$subcommand" == "-h" ]]; then
+    # Explicit --help (or -h) at any position
+    if [[ "$help_mode" -eq 1 ]]; then
+        if [[ -n "$subcommand" ]]; then
+            local sub_help_fn="cmd_${command}_${subcommand}_help"
+            if declare -f "$sub_help_fn" >/dev/null 2>&1; then
+                "$sub_help_fn"
+                return 0
+            fi
+        fi
+        local help_fn="cmd_${command}_help"
+        if declare -f "$help_fn" >/dev/null 2>&1; then
+            "$help_fn"
+            return 0
+        fi
+        die "Unknown command: $command"
+    fi
+
+    # No subcommand: try standalone command function, then fall back to group help
+    if [[ -z "$subcommand" ]]; then
+        local direct_fn="cmd_${command}"
+        if declare -f "$direct_fn" >/dev/null 2>&1; then
+            "$direct_fn" "${filtered_args[@]}"
+            return 0
+        fi
         local help_fn="cmd_${command}_help"
         if declare -f "$help_fn" >/dev/null 2>&1; then
             "$help_fn"
@@ -122,14 +156,7 @@ dispatch_subcommand() {
         return 0
     fi
 
-    if [[ "${filtered_args[0]:-}" == "--help" || "${filtered_args[0]:-}" == "-h" ]]; then
-        local sub_help_fn="cmd_${command}_${subcommand}_help"
-        if declare -f "$sub_help_fn" >/dev/null 2>&1; then
-            "$sub_help_fn"
-            return 0
-        fi
-    fi
-
+    # Dispatch to subcommand function
     local fn="cmd_${command}_${subcommand}"
     if declare -f "$fn" >/dev/null 2>&1; then
         "$fn" "${filtered_args[@]}"

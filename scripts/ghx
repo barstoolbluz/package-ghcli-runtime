@@ -21,19 +21,6 @@ shift
 command_file="${GHX_ROOT}/lib/ghx/commands/${command}.sh"
 
 if [[ ! -f "$command_file" ]]; then
-    # Handle top-level --learn for commands without subcommands
-    if [[ "$command" == "status" ]]; then
-        source "${GHX_ROOT}/lib/ghx/commands/status.sh"
-        # Check for --learn in remaining args
-        for arg in "$@"; do
-            if [[ "$arg" == "--learn" ]]; then
-                show_learn "status"
-                exit 0
-            fi
-        done
-        cmd_status "$@"
-        exit 0
-    fi
     die "Unknown command: $command. Run 'ghx --help' for usage."
 fi
 

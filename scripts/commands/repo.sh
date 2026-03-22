@@ -58,7 +58,7 @@ cmd_repo_view() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -w|--web)  args+=(--web); shift ;;
-            --json)    args+=(--json "$2"); shift 2 ;;
+            --json)    need_arg "$@"; args+=(--json "$2"); shift 2 ;;
             *)         args+=("$1"); shift ;;
         esac
     done
@@ -87,8 +87,8 @@ cmd_repo_fork() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
             --clone)       args+=(--clone); shift ;;
-            --remote-name) args+=(--remote-name "$2"); shift 2 ;;
-            --org)         args+=(--org "$2"); shift 2 ;;
+            --remote-name) need_arg "$@"; args+=(--remote-name "$2"); shift 2 ;;
+            --org)         need_arg "$@"; args+=(--org "$2"); shift 2 ;;
             *)             args+=("$1"); shift ;;
         esac
     done

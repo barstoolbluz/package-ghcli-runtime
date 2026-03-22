@@ -39,12 +39,12 @@ cmd_issue_create() {
     local args=()
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            -t|--title)     args+=(--title "$2"); shift 2 ;;
-            -b|--body)      args+=(--body "$2"); shift 2 ;;
-            -a|--assignee)  args+=(--assignee "$2"); shift 2 ;;
-            -l|--label)     args+=(--label "$2"); shift 2 ;;
-            -m|--milestone) args+=(--milestone "$2"); shift 2 ;;
-            -p|--project)   args+=(--project "$2"); shift 2 ;;
+            -t|--title)     need_arg "$@"; args+=(--title "$2"); shift 2 ;;
+            -b|--body)      need_arg "$@"; args+=(--body "$2"); shift 2 ;;
+            -a|--assignee)  need_arg "$@"; args+=(--assignee "$2"); shift 2 ;;
+            -l|--label)     need_arg "$@"; args+=(--label "$2"); shift 2 ;;
+            -m|--milestone) need_arg "$@"; args+=(--milestone "$2"); shift 2 ;;
+            -p|--project)   need_arg "$@"; args+=(--project "$2"); shift 2 ;;
             *)              args+=("$1"); shift ;;
         esac
     done
@@ -75,13 +75,13 @@ cmd_issue_list() {
     local args=()
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            -s|--state)   args+=(--state "$2"); shift 2 ;;
-            -a|--assignee) args+=(--assignee "$2"); shift 2 ;;
-            -l|--label)   args+=(--label "$2"); shift 2 ;;
-            -L|--limit)   args+=(--limit "$2"); shift 2 ;;
-            -S|--search)  args+=(--search "$2"); shift 2 ;;
-            --json)       args+=(--json "$2"); shift 2 ;;
-            *)            args+=("$1"); shift ;;
+            -s|--state)    need_arg "$@"; args+=(--state "$2"); shift 2 ;;
+            -a|--assignee) need_arg "$@"; args+=(--assignee "$2"); shift 2 ;;
+            -l|--label)    need_arg "$@"; args+=(--label "$2"); shift 2 ;;
+            -L|--limit)    need_arg "$@"; args+=(--limit "$2"); shift 2 ;;
+            -S|--search)   need_arg "$@"; args+=(--search "$2"); shift 2 ;;
+            --json)        need_arg "$@"; args+=(--json "$2"); shift 2 ;;
+            *)             args+=("$1"); shift ;;
         esac
     done
     gh issue list "${args[@]}"
@@ -109,7 +109,7 @@ cmd_issue_view() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -w|--web)     args+=(--web); shift ;;
-            --json)       args+=(--json "$2"); shift 2 ;;
+            --json)       need_arg "$@"; args+=(--json "$2"); shift 2 ;;
             --comments)   args+=(--comments); shift ;;
             *)            args+=("$1"); shift ;;
         esac

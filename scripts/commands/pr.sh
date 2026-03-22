@@ -42,14 +42,14 @@ cmd_pr_create() {
     local args=()
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            -t|--title)   args+=(--title "$2"); shift 2 ;;
-            -b|--body)    args+=(--body "$2"); shift 2 ;;
-            -d|--draft)   args+=(--draft); shift ;;
-            -B|--base)    args+=(--base "$2"); shift 2 ;;
-            -a|--assignee) args+=(--assignee "$2"); shift 2 ;;
-            -l|--label)   args+=(--label "$2"); shift 2 ;;
-            -f|--fill)    args+=(--fill); shift ;;
-            *)            args+=("$1"); shift ;;
+            -t|--title)    need_arg "$@"; args+=(--title "$2"); shift 2 ;;
+            -b|--body)     need_arg "$@"; args+=(--body "$2"); shift 2 ;;
+            -d|--draft)    args+=(--draft); shift ;;
+            -B|--base)     need_arg "$@"; args+=(--base "$2"); shift 2 ;;
+            -a|--assignee) need_arg "$@"; args+=(--assignee "$2"); shift 2 ;;
+            -l|--label)    need_arg "$@"; args+=(--label "$2"); shift 2 ;;
+            -f|--fill)     args+=(--fill); shift ;;
+            *)             args+=("$1"); shift ;;
         esac
     done
     gh pr create "${args[@]}"
@@ -79,12 +79,12 @@ cmd_pr_list() {
     local args=()
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            -s|--state)   args+=(--state "$2"); shift 2 ;;
-            -a|--author)  args+=(--author "$2"); shift 2 ;;
-            -l|--label)   args+=(--label "$2"); shift 2 ;;
-            -L|--limit)   args+=(--limit "$2"); shift 2 ;;
-            -S|--search)  args+=(--search "$2"); shift 2 ;;
-            --json)       args+=(--json "$2"); shift 2 ;;
+            -s|--state)   need_arg "$@"; args+=(--state "$2"); shift 2 ;;
+            -a|--author)  need_arg "$@"; args+=(--author "$2"); shift 2 ;;
+            -l|--label)   need_arg "$@"; args+=(--label "$2"); shift 2 ;;
+            -L|--limit)   need_arg "$@"; args+=(--limit "$2"); shift 2 ;;
+            -S|--search)  need_arg "$@"; args+=(--search "$2"); shift 2 ;;
+            --json)       need_arg "$@"; args+=(--json "$2"); shift 2 ;;
             *)            args+=("$1"); shift ;;
         esac
     done
@@ -113,7 +113,7 @@ cmd_pr_view() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -w|--web)     args+=(--web); shift ;;
-            --json)       args+=(--json "$2"); shift 2 ;;
+            --json)       need_arg "$@"; args+=(--json "$2"); shift 2 ;;
             --comments)   args+=(--comments); shift ;;
             *)            args+=("$1"); shift ;;
         esac
@@ -141,7 +141,7 @@ cmd_pr_checkout() {
     local args=()
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            -b|--branch)  args+=(--branch "$2"); shift 2 ;;
+            -b|--branch)  need_arg "$@"; args+=(--branch "$2"); shift 2 ;;
             --detach)     args+=(--detach); shift ;;
             *)            args+=("$1"); shift ;;
         esac

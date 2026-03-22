@@ -38,11 +38,11 @@ cmd_run_list() {
     local args=()
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            -w|--workflow) args+=(--workflow "$2"); shift 2 ;;
-            -b|--branch)  args+=(--branch "$2"); shift 2 ;;
-            -s|--status)  args+=(--status "$2"); shift 2 ;;
-            -L|--limit)   args+=(--limit "$2"); shift 2 ;;
-            --json)       args+=(--json "$2"); shift 2 ;;
+            -w|--workflow) need_arg "$@"; args+=(--workflow "$2"); shift 2 ;;
+            -b|--branch)  need_arg "$@"; args+=(--branch "$2"); shift 2 ;;
+            -s|--status)  need_arg "$@"; args+=(--status "$2"); shift 2 ;;
+            -L|--limit)   need_arg "$@"; args+=(--limit "$2"); shift 2 ;;
+            --json)       need_arg "$@"; args+=(--json "$2"); shift 2 ;;
             *)            args+=("$1"); shift ;;
         esac
     done
@@ -72,7 +72,7 @@ cmd_run_view() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -w|--web)       args+=(--web); shift ;;
-            --json)         args+=(--json "$2"); shift 2 ;;
+            --json)         need_arg "$@"; args+=(--json "$2"); shift 2 ;;
             --log)          args+=(--log); shift ;;
             --log-failed)   args+=(--log-failed); shift ;;
             *)              args+=("$1"); shift ;;
@@ -101,7 +101,7 @@ cmd_run_watch() {
     local args=()
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            -i|--interval)   args+=(--interval "$2"); shift 2 ;;
+            -i|--interval)   need_arg "$@"; args+=(--interval "$2"); shift 2 ;;
             --exit-status)   args+=(--exit-status); shift ;;
             *)               args+=("$1"); shift ;;
         esac
