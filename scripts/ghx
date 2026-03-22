@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+GHX_ROOT="$(dirname "$(dirname "$(readlink -f "$0")")")"
+source "${GHX_ROOT}/lib/ghx/lib/ghx-common.sh"
+
+case "${1:-}" in
+    --help|-h|"")
+        ghx_show_help
+        exit 0
+        ;;
+    --version|-V)
+        printf 'ghx %s\n' "$GHX_VERSION"
+        exit 0
+        ;;
+esac
+
+command="$1"
+shift
+
+command_file="${GHX_ROOT}/lib/ghx/commands/${command}.sh"
+
+if [[ ! -f "$command_file" ]]; then
+    # Handle top-level --learn for commands without subcommands
+    if [[ "$command" == "status" ]]; then
+        source "${GHX_ROOT}/lib/ghx/commands/status.sh"
+        # Check for --learn in remaining args
+        for arg in "$@"; do
+            if [[ "$arg" == "--learn" ]]; then
+                show_learn "status"
+                exit 0
+            fi
+        done
+        cmd_status "$@"
+        exit 0
+    fi
+    die "Unknown command: $command. Run 'ghx --help' for usage."
+fi
+
+source "$command_file"
+
+subcommand="${1:-}"
+if [[ -n "$subcommand" && "$subcommand" != -* ]]; then
+    shift
+else
+    subcommand=""
+fi
+
+dispatch_subcommand "$command" "$subcommand" "$@"

@@ -1,0 +1,47 @@
+## Flox Environment Manifest -----------------------------------------
+##
+##   _Everything_ you need to know about the _manifest_ is here:
+##
+##   https://flox.dev/docs/reference/command-reference/manifest.toml/
+##
+## -------------------------------------------------------------------
+# Flox manifest version managed by Flox CLI
+schema-version = "1.10.0"
+
+
+## Install Packages --------------------------------------------------
+[install]
+gh.pkg-path = "gh"
+jq.pkg-path = "jq"
+gum.pkg-path = "gum"
+bash.pkg-path = "bash"
+coreutils.pkg-path = "coreutils"
+less.pkg-path = "less"
+
+
+## Environment Variables ---------------------------------------------
+[vars]
+
+
+## Activation Hook ---------------------------------------------------
+[hook]
+
+
+## Profile script ----------------------------------------------------
+[profile]
+
+
+## Services ---------------------------------------------------------
+[services]
+
+
+## Include ----------------------------------------------------------
+[include]
+
+
+## Build and publish your own packages ------------------------------
+[build]
+
+
+## Other Environment Options -----------------------------------------
+[options]
