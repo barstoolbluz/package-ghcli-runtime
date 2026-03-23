@@ -1,11 +1,3 @@
-## Flox Environment Manifest -----------------------------------------
-##
-##   _Everything_ you need to know about the _manifest_ is here:
-##
-##   https://flox.dev/docs/reference/command-reference/manifest.toml/
-##
-## -------------------------------------------------------------------
-# Flox manifest version managed by Flox CLI
 schema-version = "1.10.0"
 
 
@@ -17,6 +9,9 @@ gum.pkg-path = "gum"
 bash.pkg-path = "bash"
 coreutils.pkg-path = "coreutils"
 less.pkg-path = "less"
+cargo.pkg-path = "cargo"
+pkg-config.pkg-path = "pkg-config"
+rustc.pkg-path = "rustc"
 
 
 ## Environment Variables ---------------------------------------------

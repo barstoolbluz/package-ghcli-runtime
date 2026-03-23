@@ -1,0 +1,7 @@
+{
+  "build_version": 1,
+  "force_increment": 0,
+  "git_rev": "1cfb0c56f725a29cf1774b34e769f0575f935881",
+  "git_rev_short": "1cfb0c5",
+  "changelog": "Initial release of ghx educational GitHub CLI wrapper."
+}

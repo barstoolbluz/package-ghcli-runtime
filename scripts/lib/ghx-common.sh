@@ -79,7 +79,7 @@ ensure_gh_auth() {
     fi
     if ! gh auth status >/dev/null 2>&1; then
         fmt_error "Not authenticated with GitHub"
-        fmt_info "Run 'ghcli-runtime' to set up authentication, or 'gh auth login' directly." >&2
+        fmt_info "Run 'ghcli-setup' to set up authentication, or 'gh auth login' directly." >&2
         exit 1
     fi
 }
