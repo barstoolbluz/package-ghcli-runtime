@@ -1,4 +1,4 @@
-{ rustPlatform, lib, pkg-config, stdenv, darwin }:
+{ rustPlatform, lib, pkg-config }:
 
 rustPlatform.buildRustPackage {
   pname = "ghcli-setup";
@@ -9,10 +9,6 @@ rustPlatform.buildRustPackage {
   cargoLock.lockFile = ../../src/ghcli-setup/Cargo.lock;
 
   nativeBuildInputs = [ pkg-config ];
-
-  buildInputs = lib.optionals stdenv.isDarwin [
-    darwin.apple_sdk.frameworks.Security
-  ];
 
   meta = with lib; {
     description = "Flox GitHub setup wizard (Rust)";
