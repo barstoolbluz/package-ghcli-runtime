@@ -10,6 +10,12 @@ rustPlatform.buildRustPackage {
 
   nativeBuildInputs = [ pkg-config ];
 
+  postInstall = ''
+    mkdir -p $out/share/man/man1
+    $out/bin/ghcli-mangen $out/share/man/man1
+    rm -f $out/bin/ghcli-mangen
+  '';
+
   meta = with lib; {
     description = "Flox GitHub setup wizard (Rust)";
     license = licenses.mit;

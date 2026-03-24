@@ -2,7 +2,7 @@
 
 let
   buildMeta = builtins.fromJSON (builtins.readFile ../../build-meta/ghx.json);
-  baseVersion = "0.9.1";
+  baseVersion = "0.9.2";
   version = "${baseVersion}+${buildMeta.git_rev_short}";
 in
 
@@ -14,9 +14,10 @@ stdenv.mkDerivation {
   dontBuild = true;
 
   installPhase = ''
-    mkdir -p $out/bin
+    mkdir -p $out/bin $out/share/man/man1
     install -m 0755 ${ghcli-setup}/bin/ghcli-setup $out/bin/ghcli-setup
     install -m 0755 ${ghcli-setup}/bin/ghcli-reset $out/bin/ghcli-reset
+    cp ${ghcli-setup}/share/man/man1/* $out/share/man/man1/
   '';
 
   meta = with lib; {

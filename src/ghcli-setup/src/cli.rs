@@ -15,7 +15,35 @@ pub enum FallbackPolicy {
 }
 
 #[derive(Parser, Debug)]
-#[command(name = "ghcli-setup", about = "Flox GitHub setup wizard")]
+#[command(
+    name = "ghcli-setup",
+    about = "Flox GitHub setup wizard",
+    long_about = "Interactive setup wizard for GitHub CLI authentication and Git credentials.\n\n\
+        Stores your GitHub personal access token securely using a keyring-first strategy:\n\
+        \u{2022} Keyring (preferred): macOS Keychain or Linux secret-tool (D-Bus Secret Service)\n\
+        \u{2022} Encrypted file (fallback): AES-256-CBC with a local key, for headless/CI machines\n\n\
+        Tokens are never stored in plaintext or in the environment manifest.\n\n\
+        The wizard also configures Git authentication for github.com via HTTPS (credential helper),\n\
+        SSH (keypair generation/upload), or skips Git setup entirely.",
+    after_long_help = "EXAMPLES:\n    \
+        ghcli-setup                              Interactive wizard\n    \
+        ghcli-setup --replace-token              Replace an existing valid token\n    \
+        ghcli-setup --non-interactive --token ghp_xxx --git-mode ssh\n    \
+        ghcli-setup --non-interactive --replace-token --token ghp_new\n\n\
+        ENVIRONMENT VARIABLES:\n    \
+        All --long flags that accept a value have a corresponding FLOX_* environment\n    \
+        variable (shown in each flag's help). For example:\n    \
+        FLOX_GITHUB_TOKEN=ghp_xxx ghcli-setup --non-interactive\n\n\
+        CONFIG FILES:\n    \
+        All config is stored under ~/.config/gh/nix/:\n    \
+        github_config        Key-value config (TOKEN_STORAGE, GIT_MODE, etc.)\n    \
+        gh-token-helper      Script that retrieves the token for gh\n    \
+        git-credential-flox-helper   Git credential helper for HTTPS mode\n    \
+        github_token.enc     Encrypted token (file-fallback mode only)\n    \
+        .local_key           Encryption key for file-fallback mode\n\n\
+        SEE ALSO:\n    \
+        ghcli-reset(1)"
+)]
 pub struct Cli {
     /// Disable prompts; missing required inputs become errors.
     #[arg(long = "non-interactive")]
