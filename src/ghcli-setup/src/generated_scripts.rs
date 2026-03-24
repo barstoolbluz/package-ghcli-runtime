@@ -33,7 +33,7 @@ const TOKEN_HELPER: &str = r#"#!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
 
-CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/gh/flox"
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/gh/nix"
 CONFIG_FILE="$CONFIG_DIR/github_config"
 TOKEN_ENC_FILE="$CONFIG_DIR/github_token.enc"
 LOCAL_KEY_FILE="$CONFIG_DIR/.local_key"
@@ -106,7 +106,7 @@ const GIT_HELPER: &str = r#"#!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
 
-CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/gh/flox"
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/gh/nix"
 CONFIG_FILE="$CONFIG_DIR/github_config"
 GIT_CREDENTIALS_ENC_FILE="$CONFIG_DIR/git_credentials.enc"
 LOCAL_KEY_FILE="$CONFIG_DIR/.local_key"
@@ -309,7 +309,7 @@ main "$@"
 "#;
 
 const BASH_WRAPPER: &str = r#"gh() {
-    local helper="${XDG_CONFIG_HOME:-$HOME/.config}/gh/flox/gh-token-helper"
+    local helper="${XDG_CONFIG_HOME:-$HOME/.config}/gh/nix/gh-token-helper"
     local token=''
 
     token="$("$helper" 2>/dev/null || true)"
@@ -323,7 +323,7 @@ const BASH_WRAPPER: &str = r#"gh() {
 "#;
 
 const ZSH_WRAPPER: &str = r#"gh() {
-    local helper="${XDG_CONFIG_HOME:-$HOME/.config}/gh/flox/gh-token-helper"
+    local helper="${XDG_CONFIG_HOME:-$HOME/.config}/gh/nix/gh-token-helper"
     local token=''
 
     token="$("$helper" 2>/dev/null || true)"
@@ -343,7 +343,7 @@ const FISH_WRAPPER: &str = r#"function gh
         set -l config_base "$HOME/.config"
     end
 
-    set -l helper "$config_base/gh/flox/gh-token-helper"
+    set -l helper "$config_base/gh/nix/gh-token-helper"
     set -l token ("$helper" 2>/dev/null)
 
     if test -z "$token"

@@ -32,7 +32,7 @@ impl Paths {
         let config_base = std::env::var("XDG_CONFIG_HOME")
             .map(PathBuf::from)
             .unwrap_or_else(|_| home.join(".config"));
-        let config_dir = config_base.join("gh").join("flox");
+        let config_dir = config_base.join("gh").join("nix");
 
         Ok(Self {
             config_file: config_dir.join("github_config"),

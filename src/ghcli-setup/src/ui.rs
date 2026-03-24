@@ -156,6 +156,24 @@ impl Ui {
         }
     }
 
+    /// Present a multi-select checklist and return the indices of selected items.
+    pub fn multi_select(&self, prompt: &str, options: &[&str]) -> Result<Vec<usize>> {
+        if !self.interactive() {
+            bail!("selection required but running non-interactively");
+        }
+
+        let result =
+            dialoguer::MultiSelect::with_theme(&dialoguer::theme::ColorfulTheme::default())
+                .with_prompt(prompt)
+                .items(options)
+                .interact_opt()?;
+
+        match result {
+            Some(indices) => Ok(indices),
+            None => Ok(vec![]),
+        }
+    }
+
     /// Clear the terminal screen if we're on a TTY.
     pub fn clear(&self) {
         if self.interactive() {

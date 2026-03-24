@@ -3,6 +3,14 @@ name = "ghcli-setup"
 version = "0.2.0"
 edition = "2021"
 
+[[bin]]
+name = "ghcli-setup"
+path = "src/main.rs"
+
+[[bin]]
+name = "ghcli-reset"
+path = "src/reset_main.rs"
+
 [dependencies]
 clap = { version = "4", features = ["derive", "env"] }
 dialoguer = "0.11"

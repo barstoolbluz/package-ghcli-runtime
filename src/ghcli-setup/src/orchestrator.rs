@@ -59,7 +59,7 @@ pub fn run(cli: &Cli) -> Result<()> {
 
 /// Verify the config directory is not a symlink and is owned by us.
 /// Prevents a symlink attack where an adversary pre-creates a symlink
-/// at ~/.config/gh/flox pointing to a directory they control.
+/// at ~/.config/gh/nix pointing to a directory they control.
 fn verify_config_dir_safe(config_dir: &Path) -> Result<()> {
     use std::os::unix::fs::MetadataExt;
 

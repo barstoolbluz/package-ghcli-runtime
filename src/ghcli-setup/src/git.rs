@@ -379,7 +379,7 @@ mod tests {
 
     #[test]
     fn test_helper_shell_snippet() {
-        let path = Path::new("/home/user/.config/gh/flox/git-credential-flox-helper");
+        let path = Path::new("/home/user/.config/gh/nix/git-credential-flox-helper");
         let snippet = helper_shell_snippet(path);
         assert!(snippet.contains("git-credential-flox-helper"));
         assert!(snippet.starts_with("!f(){"));
